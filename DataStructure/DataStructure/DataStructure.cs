@@ -22,7 +22,7 @@ namespace DataStructure
             list.AddLast("D", 3);
             Assert(list.Count() == 4, "Wrong Count");
             Assert(list.FirstID() == "B", "Wrong First ID");
-            Assert(list.First() == 1, "Wrong First Value");
+            Assert(list.FirstValue() == 1, "Wrong First Value");
             Assert(list.Find(2) == "C", "Wrong Find");
             Assert(list.NextID("B") == "C" && list.NextID("C") == "A" && list.NextID("A") == "D", "Wrong Order");
 
@@ -57,9 +57,9 @@ namespace DataStructure
             list.AddLast("D", 3);
             Assert(list.Count() == 4, "Wrong Count");
             Assert(list.FirstID() == "B", "Wrong First ID");
-            Assert(list.First() == 1, "Wrong First Value");
+            Assert(list.FirstValue() == 1, "Wrong First Value");
             Assert(list.LastID() == "D", "Wrong Last ID");
-            Assert(list.Last() == 3, "Wrong Last Value");
+            Assert(list.LastValue() == 3, "Wrong Last Value");
             Assert(list.FindFirst(2) == "C", "Wrong Find");
             Assert(list.FindLast(1) == "B", "Wrong Find");
             Assert(list.NextID("B") == "C" && list.NextID("C") == "A" && list.NextID("A") == "D", "Wrong Order");

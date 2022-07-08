@@ -16,14 +16,14 @@ namespace DataStructure
 
         internal readonly byte[] FirstIDPrefix = { 0x01, 0x00 };
         internal readonly byte[] LastIDPrefix = { 0x01, 0x01 };
-        internal readonly byte[] NodePrefix = { 0x01, 0x02 };
+        internal readonly byte[] NodeMapPrefix = { 0x01, 0x02 };
         internal readonly byte[] CountPrefix = { 0x01, 0x03 };
 
         public DoubleLinkedList(byte listPrefix)
         {
             this.FirstIDPrefix = new byte[] { listPrefix, 0x00 };
             this.LastIDPrefix = new byte[] { listPrefix, 0x01 };
-            this.NodePrefix = new byte[] { listPrefix, 0x02 };
+            this.NodeMapPrefix = new byte[] { listPrefix, 0x02 };
             this.CountPrefix = new byte[] { listPrefix, 0x03 };
         }
 
@@ -49,40 +49,40 @@ namespace DataStructure
 
         private Node Get(ByteString id)
         {
-            StorageMap nodeMap = new(Storage.CurrentReadOnlyContext, NodePrefix);
+            StorageMap nodeMap = new(Storage.CurrentReadOnlyContext, NodeMapPrefix);
             return (Node)StdLib.Deserialize(nodeMap.Get(id));
         }
 
         private void Set(ByteString id, Node node)
         {
-            StorageMap nodeMap = new(Storage.CurrentContext, NodePrefix);
+            StorageMap nodeMap = new(Storage.CurrentContext, NodeMapPrefix);
             nodeMap.Put(id, StdLib.Serialize(node));
         }
 
         private void Delete(ByteString id)
         {
-            StorageMap nodeMap = new(Storage.CurrentContext, NodePrefix);
+            StorageMap nodeMap = new(Storage.CurrentContext, NodeMapPrefix);
             nodeMap.Delete(id);
         }
 
-        internal T First()
+        internal T FirstValue()
         {
             var firstID = FirstID();
             return Get(firstID).Value;
         }
 
-        internal T Last()
+        internal T LastValue()
         {
             var lastID = LastID();
             return Get(lastID).Value;
         }
 
-        internal T Next(ByteString id)
+        internal T NextValue(ByteString id)
         {
             return Get(NextID(id)).Value;
         }
 
-        internal T Prev(ByteString id)
+        internal T PrevValue(ByteString id)
         {
             return Get(PrevID(id)).Value;
         }
@@ -282,7 +282,7 @@ namespace DataStructure
 
         internal ByteString FindFirst(T value)
         {
-            StorageMap nodeMap = new(Storage.CurrentReadOnlyContext, NodePrefix);
+            StorageMap nodeMap = new(Storage.CurrentReadOnlyContext, NodeMapPrefix);
             var currentID = Storage.Get(Storage.CurrentReadOnlyContext, FirstIDPrefix);
 
             while (currentID is not null)
@@ -296,7 +296,7 @@ namespace DataStructure
 
         internal ByteString FindLast(T value)
         {
-            StorageMap nodeMap = new(Storage.CurrentReadOnlyContext, NodePrefix);
+            StorageMap nodeMap = new(Storage.CurrentReadOnlyContext, NodeMapPrefix);
             var currentID = Storage.Get(Storage.CurrentReadOnlyContext, LastIDPrefix);
 
             while (currentID is not null)

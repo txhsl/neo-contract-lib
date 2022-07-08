@@ -14,13 +14,13 @@ namespace DataStructure
         }
 
         private readonly byte[] FirstIDPrefix;
-        private readonly byte[] NodePrefix;
+        private readonly byte[] NodeMapPrefix;
         private readonly byte[] CountPrefix;
 
         public SingleLinkedList(byte listPrefix)
         {
             this.FirstIDPrefix = new byte[] { listPrefix, 0x00 };
-            this.NodePrefix = new byte[] { listPrefix, 0x01 };
+            this.NodeMapPrefix = new byte[] { listPrefix, 0x01 };
             this.CountPrefix = new byte[] { listPrefix, 0x02 };
         }
 
@@ -36,29 +36,29 @@ namespace DataStructure
 
         private Node Get(ByteString id)
         {
-            StorageMap nodeMap = new(Storage.CurrentReadOnlyContext, NodePrefix);
+            StorageMap nodeMap = new(Storage.CurrentReadOnlyContext, NodeMapPrefix);
             return (Node)StdLib.Deserialize(nodeMap.Get(id));
         }
 
         private void Set(ByteString id, Node node)
         {
-            StorageMap nodeMap = new(Storage.CurrentContext, NodePrefix);
+            StorageMap nodeMap = new(Storage.CurrentContext, NodeMapPrefix);
             nodeMap.Put(id, StdLib.Serialize(node));
         }
 
         private void Delete(ByteString id)
         {
-            StorageMap nodeMap = new(Storage.CurrentContext, NodePrefix);
+            StorageMap nodeMap = new(Storage.CurrentContext, NodeMapPrefix);
             nodeMap.Delete(id);
         }
 
-        internal T First()
+        internal T FirstValue()
         {
             var firstID = FirstID();
             return Get(firstID).Value;
         }
 
-        internal T Next(ByteString id)
+        internal T NextValue(ByteString id)
         {
             return Get(NextID(id)).Value;
         }
@@ -236,7 +236,7 @@ namespace DataStructure
 
         internal ByteString Find(T value)
         {
-            StorageMap nodeMap = new(Storage.CurrentReadOnlyContext, NodePrefix);
+            StorageMap nodeMap = new(Storage.CurrentReadOnlyContext, NodeMapPrefix);
             var currentID = Storage.Get(Storage.CurrentReadOnlyContext, FirstIDPrefix);
 
             while (currentID is not null)
