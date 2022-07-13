@@ -17,7 +17,7 @@ namespace DataStructure
         private readonly byte[] NodeMapPrefix;
         private readonly byte[] CountPrefix;
 
-        public SingleLinkedList(byte listPrefix)
+        internal SingleLinkedList(byte listPrefix)
         {
             this.FirstIDPrefix = new byte[] { listPrefix, 0x00 };
             this.NodeMapPrefix = new byte[] { listPrefix, 0x01 };

@@ -19,7 +19,7 @@ namespace DataStructure
         internal readonly byte[] NodeMapPrefix = { 0x01, 0x02 };
         internal readonly byte[] CountPrefix = { 0x01, 0x03 };
 
-        public DoubleLinkedList(byte listPrefix)
+        internal DoubleLinkedList(byte listPrefix)
         {
             this.FirstIDPrefix = new byte[] { listPrefix, 0x00 };
             this.LastIDPrefix = new byte[] { listPrefix, 0x01 };
